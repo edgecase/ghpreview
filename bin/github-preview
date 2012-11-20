@@ -1,0 +1,33 @@
+#!/bin/bash
+
+md_filename=$1
+html_filename=/tmp/ghpreview.html
+url=https://api.github.com/markdown/raw
+
+# Markdown to HTML
+html=`curl --data-binary @$md_filename -H 'Content-Type:text/plain' $url`
+
+# Grab Github's fingerprinted stylesheets
+stylesheets=`curl https://github.com | grep 'https:.*github.*\.css'`
+
+# Wrap it up
+cat << EOF > $html_filename
+  <html>
+    <head>
+      $stylesheets
+      <style>
+        body { padding: 30px 0; }
+        #readme { width: 914px; margin: 0 auto; }
+      </style>
+    </head>
+    <body>
+      <div id="readme">
+        <article class="markdown-body">
+          $html
+        </article>
+      </div>
+    </body>
+  </html>
+EOF
+
+open $html_filename
