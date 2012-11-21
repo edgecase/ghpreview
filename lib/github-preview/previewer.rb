@@ -18,6 +18,7 @@ module Github
       end
 
       def listen
+        puts "Previewing #{@md_filepath}. CTRL-C to stop."
         open
         Listen.to(@md_filedir, filter: /#{@md_filename}$/) do |modified|
           open
