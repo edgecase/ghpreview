@@ -1,5 +1,6 @@
 require 'net/http'
 require 'open-uri'
+require 'listen'
 
 module Github
   module Preview
@@ -9,15 +10,23 @@ module Github
       HOMEPAGE      = 'https://github.com'
       HTML_FILEPATH = '/tmp/github-preview.html'
 
-      def initialize(md_filename)
-        @md_filename = md_filename
+      def initialize(md_filepath)
+        @md_filepath = md_filepath
+        @md_filename = md_filepath.split('/').last
+        @md_filedir  = md_filepath.split('/').unshift('.').uniq[0..-2].join('/')
+        @stylesheet_links = get_fingerprinted_stylesheet_links
+      end
+
+      def listen
+        open
+        Listen.to(@md_filedir, filter: /#{@md_filename}$/) do |modified|
+          open
+        end
       end
 
       def open
         html = markdown_to_html
-        stylesheet_links = get_fingerprinted_stylesheet_links
-        puts stylesheet_links
-        html = wrap_html_with_style(html, stylesheet_links)
+        html = wrap_html_with_style(html)
         File.open(HTML_FILEPATH, 'w') { |f| f << html }
         `open #{HTML_FILEPATH}`
       end
@@ -25,7 +34,7 @@ module Github
       private
 
       def markdown_to_html
-        markdown     = File.read(@md_filename)
+        markdown     = File.read(@md_filepath)
         uri          = URI.parse(API_HOST)
         http         = Net::HTTP.new(uri.host, uri.port)
         http.use_ssl = true
@@ -43,11 +52,11 @@ module Github
         end
       end
 
-      def wrap_html_with_style(html, stylesheet_links)
+      def wrap_html_with_style(html)
         %Q{
           <html>
             <head>
-              #{stylesheet_links.join}
+              #{@stylesheet_links.join}
               <style>
                 body { padding: 30px 0; }
                 #readme { width: 914px; margin: 0 auto; }

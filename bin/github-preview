@@ -2,4 +2,4 @@
 
 require 'github-preview'
 
-Github::Preview::Previewer.new($1).open
+Github::Preview::Previewer.new($1).listen
