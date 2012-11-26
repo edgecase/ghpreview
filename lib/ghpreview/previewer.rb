@@ -9,11 +9,13 @@ module GHPreview
     HOMEPAGE      = 'https://github.com'
     HTML_FILEPATH = '/tmp/ghpreview.html'
 
-    def initialize(md_filepath)
+    def initialize(md_filepath, options = {})
       @md_filepath = md_filepath
       @md_filename = md_filepath.split('/').last
       @md_filedir  = md_filepath.split('/').unshift('.').uniq[0..-2].join('/')
       @stylesheet_links = get_fingerprinted_stylesheet_links
+
+      options[:watch] ? listen : open
     end
 
     def listen

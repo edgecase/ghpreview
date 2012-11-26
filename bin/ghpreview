@@ -1,5 +1,17 @@
 #!/usr/bin/env ruby
 
+require 'optparse'
 require 'ghpreview'
 
-GHPreview::Previewer.new(ARGV[0]).listen
+options = {}
+
+OptionParser.new do |opts|
+  opts.banner = "Usage: ghpreview [options] FILE"
+  opts.separator ""
+
+  opts.on("-w", "--watch", "Watch for changes") do |w|
+    options[:watch] = w
+  end
+end.parse!
+
+GHPreview::Previewer.new(ARGV[0], options)
