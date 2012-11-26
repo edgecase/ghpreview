@@ -31,7 +31,12 @@ module GHPreview
       html = markdown_to_html
       html = wrap_content_with_full_document(html)
       File.open(HTML_FILEPATH, 'w') { |f| f << html }
-      `open #{HTML_FILEPATH}`
+      if RUBY_PLATFORM =~ /linux/
+        command = 'xdg-open'
+      else
+        command = 'open'
+      end
+      `#{command} #{HTML_FILEPATH}`
     end
 
     private
