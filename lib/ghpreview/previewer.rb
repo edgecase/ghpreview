@@ -4,16 +4,17 @@ require 'listen'
 
 module GHPreview
   class Previewer
-    API_URI           = 'https://api.github.com/markdown/raw'
-    HOMEPAGE          = 'https://github.com'
-    HTML_FILEPATH     = '/tmp/ghpreview.html'
-    TEMPLATE_FILEPATH = "#{File.dirname(__FILE__)}/template.erb"
+    API_URI                  = 'https://api.github.com/markdown/raw'
+    HOMEPAGE                 = 'https://github.com'
+    HTML_FILEPATH            = '/tmp/ghpreview.html'
+    RAW_TEMPLATE_FILEPATH    = "#{File.dirname(__FILE__)}/template.erb"
+    STYLED_TEMPLATE_FILEPATH = "/tmp/ghpreview-template.erb"
 
     def initialize(md_filepath, options = {})
       @md_filepath = md_filepath
       @md_filename = md_filepath.split('/').last
       @md_filedir  = md_filepath.split('/').unshift('.').uniq[0..-2].join('/')
-      @stylesheet_links = get_fingerprinted_stylesheet_links
+      generate_template_with_fingerprinted_stylesheet_links
 
       options[:watch] ? listen : open
     end
@@ -42,16 +43,26 @@ module GHPreview
       message.body
     end
 
-    def get_fingerprinted_stylesheet_links
-      uri = URI.parse(HOMEPAGE)
-      uri.read.split("\n").select do |line|
-        line =~ /https:.*github.*\.css/
+    def generate_template_with_fingerprinted_stylesheet_links
+      if stale_template?(STYLED_TEMPLATE_FILEPATH)
+        uri = URI.parse(HOMEPAGE)
+        stylesheet_links = uri.read.split("\n").select do |line|
+          line =~ /https:.*github.*\.css/
+        end.join
+
+        raw_template = File.read(RAW_TEMPLATE_FILEPATH)
+        styled_template = ERB.new(raw_template).result(binding)
+        File.write(STYLED_TEMPLATE_FILEPATH, styled_template)
       end
     end
 
+    def stale_template?(filepath)
+      return true unless File.exists?(filepath)
+      File.mtime(filepath) < (Time.now - 60 * 60 * 24)
+    end
+
     def wrap_content_with_full_document(content)
-      stylesheet_links = @stylesheet_links.join
-      template = File.read(TEMPLATE_FILEPATH)
+      template = File.read(STYLED_TEMPLATE_FILEPATH)
       ERB.new(template).result(binding)
     end
   end
