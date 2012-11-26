@@ -1,11 +1,13 @@
+require 'erb'
 require 'httpclient'
 require 'listen'
 
 module GHPreview
   class Previewer
-    API_URI       = 'https://api.github.com/markdown/raw'
-    HOMEPAGE      = 'https://github.com'
-    HTML_FILEPATH = '/tmp/ghpreview.html'
+    API_URI           = 'https://api.github.com/markdown/raw'
+    HOMEPAGE          = 'https://github.com'
+    HTML_FILEPATH     = '/tmp/ghpreview.html'
+    TEMPLATE_FILEPATH = "#{File.dirname(__FILE__)}/template.erb"
 
     def initialize(md_filepath, options = {})
       @md_filepath = md_filepath
@@ -26,7 +28,7 @@ module GHPreview
 
     def open
       html = markdown_to_html
-      html = wrap_html_with_style(html)
+      html = wrap_content_with_full_document(html)
       File.open(HTML_FILEPATH, 'w') { |f| f << html }
       `open #{HTML_FILEPATH}`
     end
@@ -47,25 +49,10 @@ module GHPreview
       end
     end
 
-    def wrap_html_with_style(html)
-      %Q{
-        <html>
-          <head>
-            #{@stylesheet_links.join}
-            <style>
-              body { padding: 30px 0; }
-              #readme { width: 914px; margin: 0 auto; }
-            </style>
-          </head>
-          <body>
-            <div id="readme">
-              <article class="markdown-body">
-                #{html}
-              </article>
-            </div>
-          </body>
-        </html>
-      }
+    def wrap_content_with_full_document(content)
+      stylesheet_links = @stylesheet_links.join
+      template = File.read(TEMPLATE_FILEPATH)
+      ERB.new(template).result(binding)
     end
   end
 end
