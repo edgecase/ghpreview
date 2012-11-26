@@ -14,6 +14,7 @@ module GHPreview
       @md_filepath = md_filepath
       @md_filename = md_filepath.split('/').last
       @md_filedir  = md_filepath.split('/').unshift('.').uniq[0..-2].join('/')
+      @http        = HTTPClient.new
       generate_template_with_fingerprinted_stylesheet_links
 
       options[:watch] ? listen : open
@@ -43,15 +44,13 @@ module GHPreview
 
     def markdown_to_html
       markdown = File.read(@md_filepath)
-      client   = HTTPClient.new
-      message  = client.post API_URI, body: markdown, header: {'Content-Type' => 'text/plain'}
+      message  = @http.post API_URI, body: markdown, header: {'Content-Type' => 'text/plain'}
       message.body
     end
 
     def generate_template_with_fingerprinted_stylesheet_links
       if stale_template?(STYLED_TEMPLATE_FILEPATH)
-        uri = URI.parse(HOMEPAGE)
-        stylesheet_links = uri.read.split("\n").select do |line|
+        stylesheet_links = @http.get(HOMEPAGE).body.split("\n").select do |line|
           line =~ /https:.*github.*\.css/
         end.join
 
