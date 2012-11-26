@@ -1,5 +1,0 @@
-#!/usr/bin/env ruby
-
-require 'github-preview'
-
-Github::Preview::Previewer.new(ARGV[0]).listen

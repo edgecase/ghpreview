@@ -1,16 +1,16 @@
 # -*- encoding: utf-8 -*-
 lib = File.expand_path('../lib', __FILE__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'github-preview/version'
+require 'ghpreview/version'
 
 Gem::Specification.new do |gem|
-  gem.name          = "github-preview"
-  gem.version       = Github::Preview::VERSION
+  gem.name          = "ghpreview"
+  gem.version       = GHPreview::VERSION
   gem.authors       = ["Adam McCrea"]
   gem.email         = ["adam@adamlogic.com"]
   gem.description   = %q{Command line utility for previewing Markdown files with Github styling}
   gem.summary       = gem.description
-  gem.homepage      = "http://github.com/newcontext/github-preview"
+  gem.homepage      = "http://github.com/newcontext/ghpreview"
 
   gem.files         = `git ls-files`.split($/)
   gem.executables   = gem.files.grep(%r{^bin/}).map{ |f| File.basename(f) }

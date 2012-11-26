@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'ghpreview'
+
+GHPreview::Previewer.new(ARGV[0]).listen

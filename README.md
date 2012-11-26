@@ -1,24 +1,24 @@
-# github-preview
+# ghpreview
 
 Say you're writing a README for your project, or any other Markdown that will 
 eventually be displayed on Github. You want a way to preview this locally 
 before you push it.
 
-`github-preview` opens a preview of your Markdown file in a browser. It uses 
+`ghpreview` opens a preview of your Markdown file in a browser. It uses 
 Github styling and automatically refreshes everytime you save your source.
 
 ## Installation
 
 ```shell
-gem install github-preview
+gem install ghpreview
 ```
 
 ## Usage
 
-`github-preview` is a command-line utility.
+`ghpreview` is a command-line utility.
 
 ```shell
-github-preview README.md
+ghpreview README.md
 ```
 
 This will open your default browser with a live-updating preview.
