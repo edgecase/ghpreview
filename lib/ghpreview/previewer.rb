@@ -1,11 +1,9 @@
-require 'net/http'
-require 'open-uri'
+require 'httpclient'
 require 'listen'
 
 module GHPreview
   class Previewer
-    API_HOST      = 'https://api.github.com'
-    API_PATH      = '/markdown/raw'
+    API_URI       = 'https://api.github.com/markdown/raw'
     HOMEPAGE      = 'https://github.com'
     HTML_FILEPATH = '/tmp/ghpreview.html'
 
@@ -36,15 +34,10 @@ module GHPreview
     private
 
     def markdown_to_html
-      markdown     = File.read(@md_filepath)
-      uri          = URI.parse(API_HOST)
-      http         = Net::HTTP.new(uri.host, uri.port)
-      http.use_ssl = true
-      request      = Net::HTTP::Post.new(API_PATH)
-      request.add_field('Content-Type', 'text/plain')
-      request.body = markdown
-      response     = http.request(request)
-      response.body
+      markdown = File.read(@md_filepath)
+      client   = HTTPClient.new
+      message  = client.post API_URI, body: markdown, header: {'Content-Type' => 'text/plain'}
+      message.body
     end
 
     def get_fingerprinted_stylesheet_links
