@@ -12,8 +12,6 @@ module GHPreview
 
     def initialize(md_filepath, options = {})
       @md_filepath = md_filepath
-      @md_filename = md_filepath.split('/').last
-      @md_filedir  = md_filepath.split('/').unshift('.').uniq[0..-2].join('/')
       @http        = HTTPClient.new
       generate_template_with_fingerprinted_stylesheet_links
 
@@ -23,7 +21,11 @@ module GHPreview
     def listen
       puts "Previewing #{@md_filepath}. CTRL-C to stop."
       open
-      Listen.to(@md_filedir, filter: /#{@md_filename}$/) do |modified|
+
+      filename = File.basename(@md_filepath)
+      dirname  = File.dirname(File.expand_path(@md_filepath))
+
+      Listen.to(dirname, filter: /#{filename}$/) do |modified|
         open
       end
     end
