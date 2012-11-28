@@ -46,7 +46,17 @@ module GHPreview
 
     def markdown_to_html
       markdown = File.read(@md_filepath)
-      result = HTML::Pipeline::MarkdownFilter.new(markdown).call
+      pipeline = HTML::Pipeline.new([
+        HTML::Pipeline::MarkdownFilter,
+        HTML::Pipeline::SanitizationFilter,
+        HTML::Pipeline::CamoFilter,
+        HTML::Pipeline::ImageMaxWidthFilter,
+        HTML::Pipeline::HttpsFilter,
+        HTML::Pipeline::MentionFilter,
+        HTML::Pipeline::EmojiFilter,
+        HTML::Pipeline::SyntaxHighlightFilter
+      ], gfm: false)
+      result = pipeline.call(markdown)[:output].to_s
     end
 
     def generate_template_with_fingerprinted_stylesheet_links

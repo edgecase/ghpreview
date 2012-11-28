@@ -38,8 +38,8 @@ good tools, but none are able to truly reproduce the custom features added to
 [Github Flavored Markdown](http://github.github.com/github-flavored-markdown/). 
 This is especially notable with fenced code blocks and syntax highlighting.
 
-`ghpreview` is an accurate preview because it uses Github's own [Markdown 
-Rendering API](http://developer.github.com/v3/markdown/) to generate the HTML, 
+`ghpreview` is an accurate preview because it uses Github's own [HTML 
+processing filters](https://github.com/jch/html-pipeline) to generate the HTML, 
 and Github's own stylesheets to style it.
 
 ## Contributing
