@@ -1,14 +1,14 @@
 require 'erb'
-require 'httpclient'
+require 'html/pipeline'
 require 'listen'
+require 'httpclient'
 
 module GHPreview
   class Previewer
-    API_URI                  = 'https://api.github.com/markdown/raw'
-    HOMEPAGE                 = 'https://github.com'
     HTML_FILEPATH            = '/tmp/ghpreview.html'
     RAW_TEMPLATE_FILEPATH    = "#{File.dirname(__FILE__)}/template.erb"
     STYLED_TEMPLATE_FILEPATH = "/tmp/ghpreview-template.erb"
+    HOMEPAGE = 'https://github.com'
 
     def initialize(md_filepath, options = {})
       @md_filepath = md_filepath
@@ -46,8 +46,17 @@ module GHPreview
 
     def markdown_to_html
       markdown = File.read(@md_filepath)
-      message  = @http.post API_URI, body: markdown, header: {'Content-Type' => 'text/plain'}
-      message.body
+      pipeline = HTML::Pipeline.new([
+        HTML::Pipeline::MarkdownFilter,
+        HTML::Pipeline::SanitizationFilter,
+        HTML::Pipeline::CamoFilter,
+        HTML::Pipeline::ImageMaxWidthFilter,
+        HTML::Pipeline::HttpsFilter,
+        HTML::Pipeline::MentionFilter,
+        HTML::Pipeline::EmojiFilter,
+        HTML::Pipeline::SyntaxHighlightFilter
+      ], gfm: false)
+      result = pipeline.call(markdown)[:output].to_s
     end
 
     def generate_template_with_fingerprinted_stylesheet_links
