@@ -8,7 +8,8 @@ module GHPreview
     HTML_FILEPATH            = '/tmp/ghpreview.html'
     RAW_TEMPLATE_FILEPATH    = "#{File.dirname(__FILE__)}/template.erb"
     STYLED_TEMPLATE_FILEPATH = "/tmp/ghpreview-template.erb"
-    HOMEPAGE = 'https://github.com'
+    HOMEPAGE                 = 'https://github.com'
+    TEMPLATE_CACHE_DURATION  = 60 * 60 * 24 * 7 # one week
 
     def initialize(md_filepath, options = {})
       @md_filepath = md_filepath
@@ -73,7 +74,7 @@ module GHPreview
 
     def stale_template?(filepath)
       return true unless File.exists?(filepath)
-      File.mtime(filepath) < (Time.now - 60 * 60 * 24)
+      File.mtime(filepath) < (Time.now - TEMPLATE_CACHE_DURATION)
     end
 
     def wrap_content_with_full_document(content)
