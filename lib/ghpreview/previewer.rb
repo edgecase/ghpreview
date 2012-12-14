@@ -50,11 +50,11 @@ module GHPreview
       pipeline = HTML::Pipeline.new([
         HTML::Pipeline::MarkdownFilter,
         HTML::Pipeline::SanitizationFilter,
-        HTML::Pipeline::CamoFilter,
+#        HTML::Pipeline::CamoFilter,
         HTML::Pipeline::ImageMaxWidthFilter,
         HTML::Pipeline::HttpsFilter,
         HTML::Pipeline::MentionFilter,
-        HTML::Pipeline::EmojiFilter,
+#        HTML::Pipeline::EmojiFilter,
         HTML::Pipeline::SyntaxHighlightFilter
       ], gfm: false)
       result = pipeline.call(markdown)[:output].to_s
