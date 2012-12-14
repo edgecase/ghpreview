@@ -68,7 +68,9 @@ module GHPreview
 
         raw_template = File.read(RAW_TEMPLATE_FILEPATH)
         styled_template = ERB.new(raw_template).result(binding)
-        File.write(STYLED_TEMPLATE_FILEPATH, styled_template)
+        File.open(STYLED_TEMPLATE_FILEPATH, 'w') do |f|
+          f.write(styled_template)
+        end
       end
     end
 
