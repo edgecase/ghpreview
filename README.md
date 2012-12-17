@@ -8,6 +8,11 @@ automatically refreshes every time you save your source.
 While README files are the most common use case, `ghpreview` works with any 
 Markdown file.
 
+## Prerequisites
+
+You'll need the icu library. If you're on a Mac, `brew install icu4c` will do
+the trick.
+
 ## Installation
 
 ```bash
