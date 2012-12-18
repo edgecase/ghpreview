@@ -35,6 +35,7 @@ module GHPreview
       html = markdown_to_html
       html = wrap_content_with_full_document(html)
       File.open(HTML_FILEPATH, 'w') { |f| f << html }
+
       if RUBY_PLATFORM =~ /linux/
         command = 'xdg-open'
       else
@@ -47,14 +48,13 @@ module GHPreview
 
     def markdown_to_html
       markdown = File.read(@md_filepath)
+
       pipeline = HTML::Pipeline.new([
         HTML::Pipeline::MarkdownFilter,
         HTML::Pipeline::SanitizationFilter,
-        HTML::Pipeline::CamoFilter,
         HTML::Pipeline::ImageMaxWidthFilter,
         HTML::Pipeline::HttpsFilter,
         HTML::Pipeline::MentionFilter,
-        HTML::Pipeline::EmojiFilter,
         HTML::Pipeline::SyntaxHighlightFilter
       ], gfm: false)
       result = pipeline.call(markdown)[:output].to_s
@@ -68,7 +68,9 @@ module GHPreview
 
         raw_template = File.read(RAW_TEMPLATE_FILEPATH)
         styled_template = ERB.new(raw_template).result(binding)
-        File.write(STYLED_TEMPLATE_FILEPATH, styled_template)
+        File.open(STYLED_TEMPLATE_FILEPATH, 'w') do |f|
+          f.write(styled_template)
+        end
       end
     end
 
