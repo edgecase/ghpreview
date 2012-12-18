@@ -45,7 +45,7 @@ This is especially notable with fenced code blocks and syntax highlighting.
 
 `ghpreview` is an accurate preview because it uses Github's own [HTML 
 processing filters](https://github.com/jch/html-pipeline) to generate the HTML, 
-and Github's own stylesheets to style it.
+and Github's own stylesheets to style it :octocat:
 
 ## Contributing
 

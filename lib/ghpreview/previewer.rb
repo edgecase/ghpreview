@@ -49,14 +49,20 @@ module GHPreview
     def markdown_to_html
       markdown = File.read(@md_filepath)
 
+      context = {
+        asset_root: "http://assets.github.com/images/icons/",
+        gfm: false
+      }
+
       pipeline = HTML::Pipeline.new([
         HTML::Pipeline::MarkdownFilter,
         HTML::Pipeline::SanitizationFilter,
         HTML::Pipeline::ImageMaxWidthFilter,
         HTML::Pipeline::HttpsFilter,
         HTML::Pipeline::MentionFilter,
+        HTML::Pipeline::EmojiFilter,
         HTML::Pipeline::SyntaxHighlightFilter
-      ], gfm: false)
+      ], context)
       result = pipeline.call(markdown)[:output].to_s
     end
 
