@@ -1,17 +1,31 @@
 #!/usr/bin/env ruby
 
+trap("INT") { exit }
 require 'optparse'
 require 'ghpreview'
 
 options = {}
 
-OptionParser.new do |opts|
+optparse = OptionParser.new do |opts|
   opts.banner = "Usage: ghpreview [options] FILE"
   opts.separator ""
 
   opts.on("-w", "--watch", "Watch for changes") do |w|
     options[:watch] = w
   end
-end.parse!
+end
+
+def valid_file? filename
+  filename and File.exist?(filename) and File.file?(filename)
+end
+
+begin
+  optparse.parse!
+  unless valid_file? ARGV[0]
+    puts "Missing markdown file."
+    puts optparse
+    exit
+  end
+end
 
 GHPreview::Previewer.new(ARGV[0], options)
