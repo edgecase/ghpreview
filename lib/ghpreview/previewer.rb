@@ -16,6 +16,7 @@ module GHPreview
       @http        = HTTPClient.new
       generate_template_with_fingerprinted_stylesheet_links
 
+      @application = options[:application]
       options[:watch] ? listen : open
     end
 
@@ -39,7 +40,7 @@ module GHPreview
       if RUBY_PLATFORM =~ /linux/
         command = 'xdg-open'
       else
-        command = 'open'
+        command = @application ? "open -a #{@application}" : 'open'
       end
       `#{command} #{HTML_FILEPATH}`
     end
