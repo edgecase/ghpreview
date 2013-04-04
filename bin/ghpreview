@@ -13,6 +13,10 @@ optparse = OptionParser.new do |opts|
   opts.on("-w", "--watch", "Watch for changes") do |w|
     options[:watch] = w
   end
+
+  opts.on("-a", "--application APP", "Alternate browser") do |a|
+    options[:application] = a
+  end
 end
 
 def valid_file? filename

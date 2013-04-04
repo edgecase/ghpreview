@@ -33,6 +33,12 @@ option:
 $ ghpreview -w README.md
 ```
 
+To use an alternate browser (Mac only), use the `-a` (or `--application`) option:
+
+```bash
+$ ghpreview -a Safari.app README.md
+```
+
 ## Why is this better than X?
 
 There are several tools available for previewing Markdown files, and many that 
