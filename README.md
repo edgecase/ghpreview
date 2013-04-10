@@ -33,10 +33,14 @@ option:
 $ ghpreview -w README.md
 ```
 
-To use an alternate browser (Mac only), use the `-a` (or `--application`) option:
+To use an alternate browser, use the `-a` (or `--application`) option:
 
 ```bash
+# On Mac:
 $ ghpreview -a Safari.app README.md
+
+#On GNU/Linux:
+$ ghpreview -a konqueror README.md
 ```
 
 ## Why is this better than X?
