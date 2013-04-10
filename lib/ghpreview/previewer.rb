@@ -38,11 +38,19 @@ module GHPreview
       File.open(HTML_FILEPATH, 'w') { |f| f << html }
 
       if RUBY_PLATFORM =~ /linux/
-        command = 'xdg-open'
+        command = if @application
+                    `#{@application} #{HTML_FILEPATH} </dev/null &>/dev/null &`
+                    else
+                    `xdg-open #{HTML_FILEPATH}`
+                  end
       else
-        command = @application ? "open -a #{@application}" : 'open'
+        command = if @application
+                    "open -a #{@application}"
+                  else
+                    'open'
+                  end
+        `#{command} #{HTML_FILEPATH}`
       end
-      `#{command} #{HTML_FILEPATH}`
     end
 
     private
