@@ -1,7 +1,7 @@
 require 'erb'
-require 'html/pipeline'
 require 'listen'
 require 'httpclient'
+require_relative 'converter'
 
 module GHPreview
   class Previewer
@@ -33,7 +33,7 @@ module GHPreview
     end
 
     def open
-      html = markdown_to_html
+      html = Converter.to_html(File.read(@md_filepath))
       html = wrap_content_with_full_document(html)
       File.open(HTML_FILEPATH, 'w') { |f| f << html }
 
@@ -54,26 +54,6 @@ module GHPreview
     end
 
     private
-
-    def markdown_to_html
-      markdown = File.read(@md_filepath)
-
-      context = {
-        asset_root: "http://assets.github.com/images/icons/",
-        gfm: false
-      }
-
-      pipeline = HTML::Pipeline.new([
-        HTML::Pipeline::MarkdownFilter,
-        HTML::Pipeline::SanitizationFilter,
-        HTML::Pipeline::ImageMaxWidthFilter,
-        HTML::Pipeline::HttpsFilter,
-        HTML::Pipeline::MentionFilter,
-        HTML::Pipeline::EmojiFilter,
-        HTML::Pipeline::SyntaxHighlightFilter
-      ], context)
-      result = pipeline.call(markdown)[:output].to_s
-    end
 
     def generate_template_with_fingerprinted_stylesheet_links
       if stale_template?(STYLED_TEMPLATE_FILEPATH)
