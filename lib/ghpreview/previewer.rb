@@ -1,10 +1,10 @@
 require 'listen'
 require_relative 'converter'
 require_relative 'wrapper'
+require_relative 'viewer'
 
 module GHPreview
   class Previewer
-    HTML_FILEPATH = '/tmp/ghpreview.html'
 
     def initialize(md_filepath, options = {})
       Wrapper.generate_template_with_fingerprinted_stylesheet_links
@@ -30,22 +30,7 @@ module GHPreview
     def open
       html = Converter.to_html(File.read(@md_filepath))
       html = Wrapper.wrap_html(html)
-      File.open(HTML_FILEPATH, 'w') { |f| f << html }
-
-      if RUBY_PLATFORM =~ /linux/
-        command = if @application
-                    `#{@application} #{HTML_FILEPATH} </dev/null &>/dev/null &`
-                    else
-                    `xdg-open #{HTML_FILEPATH}`
-                  end
-      else
-        command = if @application
-                    "open -a #{@application}"
-                  else
-                    'open'
-                  end
-        `#{command} #{HTML_FILEPATH}`
-      end
+      Viewer.view_html html, @application
     end
 
   end
