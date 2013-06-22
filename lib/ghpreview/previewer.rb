@@ -1,7 +1,7 @@
-require 'listen'
 require_relative 'converter'
 require_relative 'wrapper'
 require_relative 'viewer'
+require_relative 'watcher'
 
 module GHPreview
   class Previewer
@@ -17,12 +17,7 @@ module GHPreview
 
     def listen
       puts "Previewing #{@md_filepath}. CTRL-C to stop."
-      open
-
-      filename = File.basename(@md_filepath)
-      dirname  = File.dirname(File.expand_path(@md_filepath))
-
-      Listen.to(dirname, filter: /#{filename}$/) do |modified|
+      Watcher.watch @md_filepath do
         open
       end
     end

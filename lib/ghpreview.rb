@@ -1,2 +1,2 @@
-require 'ghpreview/version'
-require 'ghpreview/previewer'
+require_relative 'ghpreview/version'
+require_relative 'ghpreview/previewer'
