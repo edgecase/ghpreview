@@ -10,6 +10,7 @@ module GHPreview
 
       pipeline = HTML::Pipeline.new([
         HTML::Pipeline::MarkdownFilter,
+        HTML::Pipeline::TableOfContentsFilter,
         HTML::Pipeline::SanitizationFilter,
         HTML::Pipeline::ImageMaxWidthFilter,
         HTML::Pipeline::HttpsFilter,
