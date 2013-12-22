@@ -8,9 +8,17 @@ module GHPreview
       filename = File.basename(filepath)
       dirname  = File.dirname(File.expand_path(filepath))
 
-      Listen.to(dirname, filter: /#{filename}$/) do |modified|
+      listener = Listen.to(dirname, filter: /#{filename}$/) do |modified|
         yield
       end
+      listener.start
+
+      Signal.trap('INT') do
+        listener.stop
+        exit
+      end
+
+      sleep
     end
   end
 end

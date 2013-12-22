@@ -17,7 +17,7 @@ Gem::Specification.new do |gem|
   gem.test_files    = gem.files.grep(%r{^(test|spec|features)/})
   gem.require_paths = ["lib"]
 
-  gem.add_dependency 'listen'
+  gem.add_dependency 'listen', '~> 2.4.0'
   gem.add_dependency 'rb-fsevent'
   gem.add_dependency 'html-pipeline', '~> 1.1.0'
   gem.add_dependency 'httpclient'
