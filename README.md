@@ -1,4 +1,4 @@
-# ghpreview
+# ghpreview &nbsp; [![Build Status](https://travis-ci.org/neo/ghpreview.png)](https://travis-ci.org/neo/ghpreview)
 
 When you're writing a README for your project, you want a way to preview the 
 Markdown locally before you push it. `ghpreview` is a command-line utility that 
