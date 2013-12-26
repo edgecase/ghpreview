@@ -3,6 +3,8 @@
 require_relative '../lib/ghpreview/wrapper'
 
 describe GHPreview::Wrapper do
+  before(:all) { GHPreview::Wrapper.generate_template_with_fingerprinted_stylesheet_links }
+
   let(:wrapper) { GHPreview::Wrapper }
 
   it "wraps an HTML fragment in a full document" do
