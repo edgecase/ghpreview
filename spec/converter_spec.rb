@@ -9,8 +9,8 @@ describe GHPreview::Converter do
     expect(converter.to_html('*Foo*')).to eql('<p><em>Foo</em></p>')
   end
 
-  it "includes anchor links in headings" do
-    expect(converter.to_html('# Foo')).to eql("<h1>\n<a name=\"foo\" href=\"#foo\"></a>Foo</h1>")
+  it 'includes anchor links in headings' do
+    expect(converter.to_html('# Foo')).to eql("<h1>\n<a href=\"#foo\"></a>Foo</h1>")
   end
 
   it "passes through non-ASCII characters" do
