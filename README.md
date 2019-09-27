@@ -39,7 +39,7 @@ To use an alternate browser, use the `-a` (or `--application`) option:
 # On Mac:
 $ ghpreview -a Safari.app README.md
 
-#On GNU/Linux:
+# On GNU/Linux:
 $ ghpreview -a konqueror README.md
 ```
 
