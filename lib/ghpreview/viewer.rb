@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module GHPreview
   class Viewer
     HTML_FILEPATH = '/tmp/ghpreview.html'
@@ -8,7 +10,7 @@ module GHPreview
       if RUBY_PLATFORM =~ /linux/
         command = if application
                     `#{application} #{HTML_FILEPATH} </dev/null &>/dev/null &`
-                    else
+                  else
                     `xdg-open #{HTML_FILEPATH}`
                   end
       else

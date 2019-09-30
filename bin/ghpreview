@@ -1,32 +1,33 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
-trap("INT") { exit }
+trap('INT') { exit }
 require 'optparse'
 require 'ghpreview'
 
 options = {}
 
 optparse = OptionParser.new do |opts|
-  opts.banner = "Usage: ghpreview [options] FILE"
-  opts.separator ""
+  opts.banner = 'Usage: ghpreview [options] FILE'
+  opts.separator ''
 
-  opts.on("-w", "--watch", "Watch for changes") do |w|
+  opts.on('-w', '--watch', 'Watch for changes') do |w|
     options[:watch] = w
   end
 
-  opts.on("-a", "--application APP", "Alternate browser") do |a|
+  opts.on('-a', '--application APP', 'Alternate browser') do |a|
     options[:application] = a
   end
 end
 
-def valid_file? filename
-  filename and File.exist?(filename) and File.file?(filename)
+def valid_file?(filename)
+  filename && File.exist?(filename) && File.file?(filename)
 end
 
 begin
   optparse.parse!
   unless valid_file? ARGV[0]
-    puts "Missing markdown file."
+    puts 'Missing markdown file.'
     puts optparse
     exit
   end
