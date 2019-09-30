@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require_relative 'converter'
 require_relative 'wrapper'
 require_relative 'viewer'
@@ -5,7 +7,6 @@ require_relative 'watcher'
 
 module GHPreview
   class Previewer
-
     def initialize(md_filepath, options = {})
       Wrapper.generate_template_with_fingerprinted_stylesheet_links
 
@@ -27,6 +28,5 @@ module GHPreview
       html = Wrapper.wrap_html(html)
       Viewer.view_html html, @application
     end
-
   end
 end

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'listen'
 
 module GHPreview
@@ -8,7 +10,7 @@ module GHPreview
       filename = File.basename(filepath)
       dirname  = File.dirname(File.expand_path(filepath))
 
-      listener = Listen.to(dirname, filter: /#{filename}$/) do |modified|
+      listener = Listen.to(dirname, filter: /#{filename}$/) do |_modified|
         yield
       end
       listener.start

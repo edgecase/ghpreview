@@ -1,5 +1,6 @@
-# -*- encoding: utf-8 -*-
-lib = File.expand_path('../lib', __FILE__)
+# frozen_string_literal: true
+
+lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
 require 'ghpreview/version'
 
@@ -27,8 +28,8 @@ Gem::Specification.new do |gem|
   gem.add_dependency 'httpclient', '~> 2.8'
   gem.add_dependency 'listen', '~> 3.1.5'
   gem.add_dependency 'rb-fsevent'
-  gem.add_dependency 'rouge', '~> 3.1'
   gem.add_dependency 'rinku', '~> 1.7'
+  gem.add_dependency 'rouge', '~> 3.1'
   gem.add_dependency 'sanitize', '~> 4.4.0'
 
   gem.add_development_dependency 'byebug'

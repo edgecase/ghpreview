@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'html/pipeline'
 
 module GHPreview
@@ -10,16 +12,16 @@ module GHPreview
       }
 
       pipeline = HTML::Pipeline.new([
-        HTML::Pipeline::MarkdownFilter,
-        HTML::Pipeline::SanitizationFilter,
-        HTML::Pipeline::ImageMaxWidthFilter,
-        HTML::Pipeline::TableOfContentsFilter,
-        HTML::Pipeline::HttpsFilter,
-        HTML::Pipeline::AutolinkFilter,
-        HTML::Pipeline::MentionFilter,
-        HTML::Pipeline::EmojiFilter,
-        HTML::Pipeline::SyntaxHighlightFilter
-      ], context)
+                                      HTML::Pipeline::MarkdownFilter,
+                                      HTML::Pipeline::SanitizationFilter,
+                                      HTML::Pipeline::ImageMaxWidthFilter,
+                                      HTML::Pipeline::TableOfContentsFilter,
+                                      HTML::Pipeline::HttpsFilter,
+                                      HTML::Pipeline::AutolinkFilter,
+                                      HTML::Pipeline::MentionFilter,
+                                      HTML::Pipeline::EmojiFilter,
+                                      HTML::Pipeline::SyntaxHighlightFilter
+                                    ], context)
 
       pipeline.call(markdown)[:output].to_s
     end
