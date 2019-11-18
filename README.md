@@ -5,13 +5,17 @@ Markdown locally before you push it. `ghpreview` is a command-line utility that
 opens your Markdown file in a browser. It uses Github styling and (optionally) 
 automatically refreshes every time you save your source.
 
-While README files are the most common use case, `ghpreview` works with any 
+While README files are the most common use case, `ghpreview** works with any 
 Markdown file.
 
 ## Prerequisites
 
-You'll need the icu library. If you're on a Mac, `brew install icu4c` will do
-the trick.
+You'll need the icu library:
+
+* **Ubuntu/Debian**: `sudo apt-get install libicu-dev`
+* **Mac OS**: `brew install icu4c`
+
+You might also need to install `cmake` for building native extensions from the dependencies.
 
 ## Installation
 
